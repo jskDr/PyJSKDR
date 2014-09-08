@@ -105,16 +105,73 @@ def ask_q2( N):
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
 
+def ask_q21( N):
+    """
+    ask_q21( N)
+      - 두자리와 한자리 수의 곱셈에 대해서 배운다.
+      - 덧셈을 뒤에서부터 하는 것도 추가하는 것을 고려해 본다.
+      - 덧셈을 가로가 아닌 세로로 칸을 맞추어 할 수 있도록 만들어본다.
+      - 기본 아이디어만 제시하고 태크니션을 사용하여 더 멋지게 만든다.
+    """
+    print "두자리수와 한자리수의 곱셈 계산을 배우면서 테스트한다."
+    print "- 각 자리를 단계적으로 나눠서 계산하는 방법을 익히게 한다."
+    print "  (2자리 숫자의 계산을 아래에서 위로 단계적으로 계산한다.)"
+
+    correct_N = 0
+    for iter in range( N):
+        x, y = rd.randint(10, 99), rd.randint(2, 9)
+        z = x * y
+        
+        print "{}번째 문제입니다.".format( iter + 1)
+        print "Q: {x} x {y} =?".format(x=x, y=y)
+          
+        # 자리수별로 x를 나타내어 xx 어레이에 저장한다.
+        # yy = [ y % 10, (y/10)*10] 
+        xx = [ x % 10, (x/10)*10]
+        
+        print "1단계: 더해지는 수의 뒷자리부터 계산한다."
+        val_q1 = input( "Sub-Q1: {xx0} x {y} = y_q1? ".format( xx0=xx[0], y=y))
+        ans = xx[0] * y 
+        if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
+        ans = xx[1] * y
+        if val_q12 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "합산단계: 두 결과를 합친다."
+        val = input("Sub-Sum: {q1} + {q2} = y_q? ".format( q1=val_q1, q2=val_q2))
+        ans = val_q1 + val_q2 
+        if val != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print
+        
+        print "최종 결과를 검증한다."
+        if val == z:
+            print "You are right."
+            correct_N += 1
+        else:
+            print "It is incorrect!"
+            print "답은 {}이고, 당신은 {}라고 답했습니다.".format( z, val)
+        print
+    
+    score = 100.0 * correct_N / N
+    print "Your score is {score}".format(score=score)
+
 def gugu_basic():                    
     print "구구단 테이블을 보여줍니다."
     show_table()
     
-    print "한자리 수 곱셈 게임입니다."
+    print "레벨-1:한자리 수 곱셈 게임입니다."
     N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
     ask_q1( N_prob)
     print
     
-    print "두자리 수 곱셈 게임입니다."
+    print "레벨-2:두자리수와 한자리수의 곱셉 게임입니다."
+    N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+    ask_q21( N_prob)
+    print
+    
+    print "레벨-3: 두자리 수 곱셈 게임입니다."
     N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
     ask_q2( N_prob)
     
