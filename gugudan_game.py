@@ -137,10 +137,14 @@ def ask_q21( N):
         print "2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
         val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
         ans = xx[1] * y
-        if val_q12 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         
         print "합산단계: 두 결과를 합친다."
-        val = input("Sub-Sum: {q1} + {q2} = y_q? ".format( q1=val_q1, q2=val_q2))
+        # 합산이 용이하도록 자리 수를 맞춘다.
+        print "Sub-Sum: {q1}".format( q1=val_q1)
+        print "        +{q2}".format( q2=val_q2)
+        print "        -------"            
+        val = input("Answer:  ")
         ans = val_q1 + val_q2 
         if val != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         print
