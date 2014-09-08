@@ -11,6 +11,9 @@ def show_table():
 
 # 지금은 한자리수에 대해서 물어본다. 
 def ask_q1( N):
+    """
+      한자리수에 대해서 물어본다.
+    """
     correct_N = 0
     for iter in range( N):
         x, y = rd.randint(2, 9), rd.randint(2, 9)
@@ -44,13 +47,13 @@ def ask_q2( N):
         print "{}번째 문제입니다.".format( iter + 1)
         print "Q: {x} x {y} =?".format(x=x, y=y)
           
-          # 자리수별로 y를 나타내어 yy 어레이에 저장한다.
+        # 자리수별로 y를 나타내어 yy 어레이에 저장한다.
         yy = [ y % 10, (y/10)*10] 
         xx = [ x % 10, (x/10)*10]
           
         print "1단계: 더하는 수의 뒷자리수부터 계산을 시작한다."           
         print "Sub-Q1: {x} x {yy0} =? ".format(x=x, yy0=yy[0])
-          # 이 질문들에 대한 답도 틀렸는지 맞는지 알려준다. 이후 구현 필요함.        
+        # 이 질문들에 대한 답도 틀렸는지 맞는지 알려준다. 이후 구현 필요함.        
         print "1-1단계: 더해지는 수의 뒷자리부터 계산한다."
         val_q11 = input( "Sub-Q1-1: {xx0} x {yy0} = y_q11? ".format( xx0=xx[0], yy0=yy[0]))
         ans = xx[0] * yy[0] 
@@ -62,7 +65,11 @@ def ask_q2( N):
         if val_q12 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         
         print "1-합산단계: 두 결과를 합친다."
-        val_q1 = input("Sub-Q1-Sum: {q11} + {q12} = y_q1? ".format( q11=val_q11, q12=val_q12))
+        # val_q1 = input("Sub-Q1-Sum: {q11} + {q12} = y_q1? ".format( q11=val_q11, q12=val_q12))
+        print "Sub-Q1-Sum: {q1:>4}".format( q1=val_q11)
+        print "           +{q2:>4}".format( q2=val_q12)
+        print "           -------"            
+        val_q1 = input("Answer:      ")        
         ans = val_q11 + val_q12 
         if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         print
@@ -70,7 +77,7 @@ def ask_q2( N):
         print "2단계: 더하는 수의 이제 앞자리 수를 계산한다."   
         print "- 십단위 수를 곱하니 계산 후에 0을 더 포함해 자리수를 올려야 함을 숙지한다."        
         print "Sub-Q2: ({x} x {yy1}) x 10 =? ".format(x=x, yy1=yy[1]/10)
-          # 이 질문들에 대한 답도 틀렸는지 맞는지 알려준다. 이후 구현 필요함.        
+        # 이 질문들에 대한 답도 틀렸는지 맞는지 알려준다. 이후 구현 필요함.        
         print "2-1단계: 더해지는 수의 뒷자리부터 계산한다."
         val_q21 = input( "Sub-Q2-1: {xx0} x {yy1} = y_q21? ".format( xx0=xx[0], yy1=yy[1]/10))
         ans = xx[0] * yy[1]/10 
@@ -82,13 +89,21 @@ def ask_q2( N):
         if val_q22 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         
         print "2-합산단계: 두 결과를 합치고 자리수를 하나 올려준다."
-        val_q2 = input("Sub-Q2-Sum: ({q21} + {q22})*10 = y_q2? ".format( q21=val_q21, q22=val_q22))
+        # val_q2 = input("Sub-Q2-Sum: ({q21} + {q22})*10 = y_q2? ".format( q21=val_q21, q22=val_q22))
+        print "Sub-Q2-Sum: {q1:>4}".format( q1=val_q21*10)
+        print "           +{q2:>4}".format( q2=val_q22*10)
+        print "           -------"            
+        val_q2 = input("Answer:      ") 
         ans = (val_q21 + val_q22) * 10 
         if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         print
 
         print "3단계: 앞자리 계산 결과와 뒷자리 계산 결과를 합친다."
-        val = input("Sub-Q-Sum: {q1} + {q2} =? ".format( q1=val_q1, q2=val_q2))
+        # val = input("Sub-Q-Sum: {q1} + {q2} =? ".format( q1=val_q1, q2=val_q2))
+        print "Sub-Q-Sum: {q1:>4}".format( q1=val_q1)
+        print "          +{q2:>4}".format( q2=val_q2)
+        print "          -------"            
+        val = input("Answer:    ")
         ans = (val_q1 + val_q2) 
         if val != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         print
