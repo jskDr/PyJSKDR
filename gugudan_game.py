@@ -141,8 +141,10 @@ def ask_q21( N):
         
         print "합산단계: 두 결과를 합친다."
         # 합산이 용이하도록 자리 수를 맞춘다.
-        print "Sub-Sum: {q1}".format( q1=val_q1)
-        print "        +{q2}".format( q2=val_q2)
+        # 숫자들의 위치가 갖도록 오른쪽 정렬한다. 
+        # :>3이면 3자리로 오른쪽 정렬하라는 의미이다. 
+        print "Sub-Sum: {q1:>3}".format( q1=val_q1)
+        print "        +{q2:>3}".format( q2=val_q2)
         print "        -------"            
         val = input("Answer:  ")
         ans = val_q1 + val_q2 
