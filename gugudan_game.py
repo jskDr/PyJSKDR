@@ -480,8 +480,8 @@ def ask_q21( N):
         print      "         ---"
         print      "         {:>3}".format(val_q1)  
         ans = xx[1] * y
-        cmd =  "{:>2}x{}=?   ".format(xx[1], y) + (" "*(3 - len(str( ans)))) 
-        val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        cmd =  "{:>2}x{}=?   ".format(xx[1]/10, y) + (" "*(3 - len(str( ans)))) 
+        val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC) * 10
         if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         
         print "합산단계: 두 결과를 합친다."
@@ -492,7 +492,7 @@ def ask_q21( N):
         print      "         x" + " " + "{y}".format( y=y) 
         print      "         ---"
         print      "         " + bcolors.YELLO + "{:>3}".format(val_q1) + bcolors.ENDC 
-        print      "        +" + bcolors.YELLO + "{:>3}".format(val_q2) + bcolors.ENDC  
+        print      "        +" + bcolors.YELLO + "{:>2}".format(val_q2/10) + bcolors.ENDC  
         print      "         ---"
         ans = val_q1 + val_q2 
         cmd = "{:>2}+{:>3}=? ".format(val_q1, val_q2) + (" "*(3 - len(str( ans)))) 
