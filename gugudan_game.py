@@ -346,8 +346,8 @@ def _ask_q21_r2( N):
     
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)    
-    
-def ask_q21( N):
+   
+def _ask_q21_r3( N):
     """
     ask_q21( N)
       - 두자리와 한자리 수의 곱셈에 대해서 배운다.
@@ -414,6 +414,88 @@ def ask_q21( N):
         str = "{:>2}+{:>3}=? ".format(val_q1, val_q2)  
         val = input( bcolors.YELLO + str + bcolors.ENDC)
         ans = val_q1 + val_q2 
+        if val != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print
+        
+        print "최종 결과를 검증한다."
+        if val == z:
+            print "You are right."
+            correct_N += 1
+        else:
+            print "It is incorrect!"
+            print "답은 {}이고, 당신은 {}라고 답했습니다.".format( z, val)
+        print
+    
+    score = 100.0 * correct_N / N
+    print "Your score is {score}".format(score=score)
+    
+def ask_q21( N):
+    """
+    ask_q21( N)
+      - 두자리와 한자리 수의 곱셈에 대해서 배운다.
+      - 덧셈을 뒤에서부터 하는 것도 추가하는 것을 고려해 본다.
+      - 덧셈을 가로가 아닌 세로로 칸을 맞추어 할 수 있도록 만들어본다.
+      - 기본 아이디어만 제시하고 태크니션의 도움을 받아 더 멋지게 만든다.
+      추가한 모드 & 추가할 모드 
+      - 곱셉도 세로로 하게 한다. (2014.9.9 --> 2014.9.9)
+      - 스스로 곱셈의 단계를 입력하도록 한다. (2014.9.9 --> 완료 시점)
+      - 각 단계의 답 입력을 자리 수에 맞춘다. (2014.9.9 --> 2014.9.9)
+      - 덧셈을 뒷자리부터 하게 한다. (2014.9.9 --> 완료시점, advanced)
+      - 부분 답을 입력하는 위치를 맞춘다. (2014.9.9 --> 완료시점)
+    """
+    print "두자리수와 한자리수의 곱셈 계산을 배우면서 테스트한다."
+    print "- 각 자리를 단계적으로 나눠서 계산하는 방법을 익히게 한다."
+    print "  (2자리 숫자의 계산을 아래에서 위로 단계적으로 계산한다.)"
+
+    correct_N = 0
+    for nn in range( N):
+        x, y = rd.randint(10, 99), rd.randint(2, 9)
+        z = x * y
+        
+        print bcolors.OKBLUE + "{}".format( nn + 1) + bcolors.ENDC + "번째 문제입니다."
+        # print "Q: {x} x {y} =?".format(x=x, y=y)
+        print "질문: {x:>2}".format(x=x) #두자리 수
+        print "    x{y:>2}".format(y=y) #한자리 수 
+          
+        # 자리수별로 x를 나타내어 xx 어레이에 저장한다.
+        # yy = [ y % 10, (y/10)*10] 
+        xx = [ x % 10, (x/10)*10]
+        
+        print "1단계: 더해지는 수의 뒷자리부터 계산한다."
+        #val_q1 = input( "Sub-Q1: {xx0} x {y} = y_q1? ".format( xx0=xx[0], y=y))
+		#앞에서 뒤에 풀어야 할 수식을 적어준다. 가로 방식과 세로 방식의 융합이다. 2*9 = 을 앞에 적어준다.
+        print      "Sub-Q1:   " + "{xx1}".format( xx1=xx[1]/10) + bcolors.YELLO + "{xx0}".format( xx0=xx[0]) + bcolors.ENDC
+        print      "         x" + " " + bcolors.YELLO + "{y}".format( y=y) + bcolors.ENDC
+        print      "         ---"
+        ans = xx[0] * y 
+        cmd =    "{}x{}=?    ".format(xx[0], y) + (" "*(3 - len(str( ans)))) 
+        val_q1 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        #val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
+        print      "Sub-Q2:   " + bcolors.YELLO + "{xx1}".format( xx1=xx[1]/10) + bcolors.ENDC +"{xx0}".format( xx0=xx[0])
+        print      "         x" + " " + bcolors.YELLO + "{y}".format( y=y) + bcolors.ENDC
+        print      "         ---"
+        print      "         {:>3}".format(val_q1)  
+        ans = xx[1] * y
+        cmd =  "{:>2}x{}=?   ".format(xx[1], y) + (" "*(3 - len(str( ans)))) 
+        val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "합산단계: 두 결과를 합친다."
+        # 합산이 용이하도록 자리 수를 맞춘다.
+        # 숫자들의 위치가 갖도록 오른쪽 정렬한다. 
+        # :>3이면 3자리로 오른쪽 정렬하라는 의미이다. 
+        print      "Sub-Sum:  " + "{xx1}".format( xx1=xx[1]/10) + "{xx0}".format( xx0=xx[0])
+        print      "         x" + " " + "{y}".format( y=y) 
+        print      "         ---"
+        print      "         " + bcolors.YELLO + "{:>3}".format(val_q1) + bcolors.ENDC 
+        print      "        +" + bcolors.YELLO + "{:>3}".format(val_q2) + bcolors.ENDC  
+        print      "         ---"
+        ans = val_q1 + val_q2 
+        cmd = "{:>2}+{:>3}=? ".format(val_q1, val_q2) + (" "*(3 - len(str( ans)))) 
+        val = input( bcolors.YELLO + cmd + bcolors.ENDC)
         if val != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         print
         
