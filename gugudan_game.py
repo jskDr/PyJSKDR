@@ -455,8 +455,9 @@ def ask_q21( N):
         print bcolors.OKBLUE + "{}".format( nn + 1) + bcolors.ENDC + "번째 문제입니다."
         # print "Q: {x} x {y} =?".format(x=x, y=y)
         print "질문: {x:>2}".format(x=x) #두자리 수
-        print "    x{y:>2}".format(y=y) #한자리 수 
-          
+        print "     x{y:>2}".format(y=y) #한자리 수 
+        print
+ 
         # 자리수별로 x를 나타내어 xx 어레이에 저장한다.
         # yy = [ y % 10, (y/10)*10] 
         xx = [ x % 10, (x/10)*10]
