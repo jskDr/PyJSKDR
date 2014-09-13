@@ -1,5 +1,32 @@
 #-*- coding: utf-8 -*-
 import random as rd
+import time
+
+class Timer(object):
+    def __init__(self, name=None, n = 1):
+        self.name = name
+        self.n = n
+
+    def __enter__(self):
+        self.tstart = time.time()
+
+    def __exit__(self, type, value, traceback):
+        if self.name:
+            print '[%s]' % self.name,
+        t_e = time.time() - self.tstart
+        print 'Elapsed: %.1f(sec) for %d, 1EA: %.1f(sec) for 1' % (t_e, self.n, t_e/self.n)
+    """
+    Time Estimation (시간을 측정할 예정이다. 가입도 시킬 예정이다.)
+    import time
+    t = time.time()
+    # do stuff
+    elapsed = time.time() - t
+
+    클라스를 사용하면 다음과 같이 간단해 진다.
+    with Timer('foo_stuff'):
+    # do some foo
+    # do some stuff
+    """
 
 class sizedInt():    
     """
@@ -857,19 +884,22 @@ def gugu_basic():
         elif level == 2:
             print "레벨-2:한자리 수 곱셈 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            ask_q1( N_prob)
+            with Timer( '1x1곱셈 {}개'.format( N_prob), N_prob):
+                ask_q1( N_prob)
             print 
         
         elif level == 3:
             print "레벨-3:두자리수와 한자리수의 곱셉 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            ask_q21( N_prob)
+            with Timer( '2x1곱셈 {}개'.format( N_prob), N_prob):
+                ask_q21( N_prob)
             print
             
         elif level == 4:
             print "레벨-4: 두자리 수 곱셈 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            ask_q2( N_prob)
+            with Timer( '2x2곱셈 {}개'.format( N_prob), N_prob):
+                ask_q2( N_prob)
         
         elif level == 9:
             print "게임이 끝났습니다."
