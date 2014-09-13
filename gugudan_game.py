@@ -716,18 +716,19 @@ def ask_q2( N):
         print      "          x" + "{y1}".format( y1=yy[1]/10) + bcolors.YELLO + "{y0}".format( y0=yy[0]) + bcolors.ENDC
         print      "          ---"
         ans = xx[0] * yy[0] 
-        cmd =    "{}x{}=?     ".format(xx[0], yy[0]) + (" "*(3 - len(str( ans)))) 
+        cmd =    "{}x{}=?      ".format(xx[0], yy[0]) + (" "*(2 - len(str( ans)))) 
         val_q1 = input( bcolors.YELLO + cmd + bcolors.ENDC)
         if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         
-        print "1-2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        print "1-2단계: 더해지는 수의 앞자리에 대해 계산한다."
+        print "계산후 자리수를 맞추기 위해 0을 덧붙인다."
         #val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
         print      "Sub1-2:    " + bcolors.YELLO + "{xx1}".format( xx1=xx[1]/10) + bcolors.ENDC +"{xx0}".format( xx0=xx[0])
         print      "          x" + "{y1}".format( y1=yy[1]/10) + bcolors.YELLO + "{y0}".format( y0=yy[0]) + bcolors.ENDC
         print      "          ---"
         print      "           {:>2}".format(val_q1)  
         ans = xx[1] * yy[0]
-        cmd =  "{}x{}=?     ".format(xx[1]/10, yy[0]) + (" "*(2 - len(str( ans)))) 
+        cmd =  "{}x{}=?     ".format(xx[1]/10, yy[0]) + (" "*(2 - len(str( ans/10)))) 
         val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC) * 10
         if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         
@@ -760,7 +761,8 @@ def ask_q2( N):
         val_q1 = input( bcolors.YELLO + cmd + bcolors.ENDC) *10
         if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
         
-        print "2-2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        print "2-2단계: 더해지는 수의 앞자리에 대해 계산한다."
+        print "계산후 자리수를 맞추기 위해 0을 덧붙인다."
         #val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
         print      "Sub2-2:    " + bcolors.YELLO + "{xx1}".format( xx1=xx[1]/10) + bcolors.ENDC +"{xx0}".format( xx0=xx[0])
         print      "          x" + bcolors.YELLO + "{y1}".format( y1=yy[1]/10) + bcolors.ENDC + "{y0}".format(y0=yy[0])
@@ -826,6 +828,7 @@ def gugu_basic():
         print "4. 두자리 수 곱셈 게임입니다."
         print "9. 게임 완료"
         level = input( "번호를 입력해 주세요 (0-4, 9) --> ")
+        print
         
         if level == 0:
             print "순서대로 하면서 레벨을 높혀봅시다."            
@@ -870,7 +873,8 @@ def gugu_basic():
         
         elif level == 9:
             print "게임이 끝났습니다."
-         
+        
+        print         
 
-print bcolors.WARNING + "교육과 게임이 합쳐지는 에듀게임이 시작됩니다." + bcolors.ENDC
+print bcolors.WARNING + "진짜 교육과 게임이 합쳐지는 리얼에듀게임이 시작됩니다." + bcolors.ENDC
 gugu_basic()
