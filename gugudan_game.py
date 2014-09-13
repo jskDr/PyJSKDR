@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import random as rd
 import time
+import math
 
 class Timer(object):
     def __init__(self, name=None, n = 1):
@@ -842,6 +843,62 @@ def ask_q2( N):
     
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
+    
+def ask_root_2bc( N):
+    print '2차 방정식의 근의 공식을 구하는 문제입니다.'
+    correct_N = 0
+    for ii in range( N):
+        print '{}번째 문제입니다.'.format( ii+1)
+        
+        # b는 계산의 편이를 위해 짝수만 사용한다.
+        c = rd.randint(-10, 10)
+        if c < 0:
+            b = rd.randint(-10, 10) * 2
+        else:                
+            # b-4c >= 0 is necessary condition to be real roots.
+            b_min = 2 * math.sqrt( c)
+            b_m = int( math.ceil( b_min / 2.0))
+            b = rd.randint( b_m, b_m + 10) * 2
+            
+        print '문제:  x^2 + {b}x + {c} = 0, find x?'.format( b=b, c=c)
+        print 
+        print '단계1: 좌변을 2차 거듭제곱 형태로 만든다.' 
+        print '      (x+B)^2 + ({b}-2B)x + {c}-B^2 = 0'.format( b=b, c=c)
+        print '      여기서, (x+B)^2 = x^2 + 2Bx + B^2' 
+        B = input('B = {b}/2 = ? '.format( b=b))
+        ans = b/2
+        if B != ans: print "틀렸어요. 답은 {}입니다.".format( ans)
+        else: print '맞았어요'
+        print
+
+        print '단계2: 좌변을 2차 거듭제곱 형태로 만든다.' 
+        print '      (x+{B})^2 = C'.format( B=B)
+        C = input('C = ({B})^2 - {c} = ? '.format( B=B, c=c))
+        ans = B**2 - c
+        if C != ans: print '틀렸어요. 답은 {}입니다.'.format( ans)
+        else: print '맞았어요'
+        print
+
+        print '단계3: x = +/-sqrt({C}) - {B}'.format(C=C,B=B)
+        sc = math.sqrt( C)
+        x_p = input( 'x+ = +{sc:.1e} - {B} =? '.format(sc=sc, B=B))       
+        x_n = input( 'x- = -{sc:.1e} - {B} =? '.format(sc=sc, B=B))
+        ans_p, ans_n = sc - B, -sc - B
+        # if the answer is not int, this is not solvable for perfect precision
+        if (x_p, x_n) != (ans_p, ans_n): 
+            print '틀렸어요. 답은 {:.1e}, {:.1e}입니다.'.format( ans_p, ans_n)
+        else:
+            print '맞았어요^^;'
+            correct_N += 1        
+        print
+        
+        a_p = x_p**2 + b*x_p + c
+        print '검증(x+): {x:.1e}^2 + {b}*{x:.1e} + {c} = {a_p:.1e}'.format(x=x_p, b=b, c=c, a_p=a_p)
+        a_n = x_n**2 + b*x_n + c
+        print '검증(x-): {x:.1e}^2 + {b}*{x:.1e} + {c} = {a_n:.1e}'.format(x=x_n, b=b, c=c, a_n=a_n)
+        
+    score = 100.0 * correct_N / N
+    print "Your score is {score}".format(score=score)
 	
 def gugu_basic():  
     
@@ -853,8 +910,9 @@ def gugu_basic():
         print "2. 한자리 수 곱셈 게임입니다."
         print "3. 두자리수와 한자리수의 곱셉 게임입니다."
         print "4. 두자리 수 곱셈 게임입니다."
+        print "5. 2차 방정식 근의 공식 게임입니다(a=1)."
         print "9. 게임 완료"
-        level = input( "번호를 입력해 주세요 (0-4, 9) --> ")
+        level = input( "번호를 입력해 주세요 (0-5, 9=quit) --> ")
         print
         
         if level == 0:
@@ -900,7 +958,13 @@ def gugu_basic():
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
             with Timer( '2x2곱셈 {}개'.format( N_prob), N_prob):
                 ask_q2( N_prob)
-        
+
+        elif level == 5:
+            print "레벨-5: 2차 방정식 근의 공식 게임입니다 (a=1 경우)."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            with Timer( '2차 방정식(a=1) {}개'.format( N_prob), N_prob):
+                ask_root_2bc( N_prob)
+
         elif level == 9:
             print "게임이 끝났습니다."
         
