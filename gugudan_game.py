@@ -1,6 +1,37 @@
 #-*- coding: utf-8 -*-
 import random as rd
 
+class sizedInt():    
+    """
+    val은 정수이고, size는 정수의 허용 크기이다.
+    """
+    def __init__(self, val, size):
+        self.val = val # int value such as 0, 12, etc.
+        self.size = size # size corresponding int value such as 1, 2, etc.
+        if len( str(val)) > size:
+            print "Error: size is smaller than len( str(val))"
+    
+def dotstr2format( s_in):
+    """
+      - 만약 1자리수만 허락된다면 다음과 같이 표현할 수 있다.
+    print ''.join( [ '{}' if a == '.' else a for a in aa])
+      - 두자리수 이상도 허락이 된다면 다른 형태를 사용한다.
+      - 자라수뿐아니라 color로 표시한다. ',' -> color가 있는 숫자         
+    """
+    s_out = ''
+    dot_count = 0
+    for i_s, s in enumerate( s_in):
+        if s == '.':
+            dot_count += 1
+            if i_s == len( s_in) - 1:
+                s_out += '{:>' + str( dot_count) + '}'
+        else:
+            if dot_count > 0:
+                s_out += '{:>' + str( dot_count) + '}'
+                dot_count = 0
+            s_out += s
+    return s_out 
+
 # 컬러를 사용한다.
 class bcolors:
     HEADER = '\033[95m'
@@ -39,7 +70,7 @@ def ask_q1( N):
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
     
-def ask_q2( N):
+def _ask_q2_r0( N):
     """
     ask_q2( N)
       - 두자리 이상 수의 곱셈에 대해서 배운다.
@@ -511,7 +542,277 @@ def ask_q21( N):
     
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
+
+def _ask_q2_r1( N):
+    """
+    ask_q22( N)
+    - 두자리 수와 두자리 수를 곱한다.
+    """
+    print "두자리수와 두자리수의 곱셈 계산을 배우면서 테스트한다."
+    print "- 각 자리를 단계적으로 나눠서 계산하는 방법을 익히게 한다."
+    print "  (2자리 숫자의 계산을 아래에서 위로 단계적으로 계산한다.)"
+
+    correct_N = 0
+    for nn in range( N):
+        x, y = rd.randint(10, 99), rd.randint(10, 99)
+        z = x * y
+        
+        print bcolors.OKBLUE + "{}".format( nn + 1) + bcolors.ENDC + "번째 문제입니다."
+        # print "Q: {x} x {y} =?".format(x=x, y=y)
+        print "Q: {x:>2}".format(x=x) #두자리 수
+        print "  x{y:>2}".format(y=y) #두자리 수 
+        print
+ 
+        # 자리수별로 x를 나타내어 xx 어레이에 저장한다.
+        # yy = [ y % 10, (y/10)*10] 
+        xx = [ x % 10, (x/10)*10]
+        yy = [ y % 10, (y/10)*10]
+
+        """
+        [2014-9-13] 편집 사항
+        - 전체적으로 한칸씩 미룬다. 최종합산 부분에서 1칸이 모자라기 때문이다.
+        """
+        #---------------------------------------------
+        print "1단계: 곱하는 수의 첫 자리에 대한 계산을 한다."        
+        print "1-1단계: 더해지는 수의 뒷자리부터 계산한다."
+        #val_q1 = input( "Sub-Q1: {xx0} x {y} = y_q1? ".format( xx0=xx[0], y=y))
+        #앞에서 뒤에 풀어야 할 수식을 적어준다. 가로 방식과 세로 방식의 융합이다. 2*9 = 을 앞에 적어준다.
+        print      "Sub1-1:    " + "{xx1}".format( xx1=xx[1]/10) + bcolors.YELLO + "{xx0}".format( xx0=xx[0]) + bcolors.ENDC
+        print      "          x" + "{y1}".format( y1=yy[1]/10) + bcolors.YELLO + "{y0}".format( y0=yy[0]) + bcolors.ENDC
+        print      "          ---"
+        ans = xx[0] * yy[0] 
+        cmd =    "{}x{}=?     ".format(xx[0], yy[0]) + (" "*(3 - len(str( ans)))) 
+        val_q1 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "1-2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        #val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
+        print      "Sub1-2:    " + bcolors.YELLO + "{xx1}".format( xx1=xx[1]/10) + bcolors.ENDC +"{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y1}".format( y1=yy[1]/10) + bcolors.YELLO + "{y0}".format( y0=yy[0]) + bcolors.ENDC
+        print      "          ---"
+        print      "           {:>2}".format(val_q1)  
+        ans = xx[1] * yy[0]
+        cmd =  "{}x{}=?     ".format(xx[1]/10, yy[0]) + (" "*(2 - len(str( ans)))) 
+        val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC) * 10
+        if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "1단계 합산단계: 두 결과를 합친다."
+        # 합산이 용이하도록 자리 수를 맞춘다.
+        # 숫자들의 위치가 갖도록 오른쪽 정렬한다. 
+        # :>3이면 3자리로 오른쪽 정렬하라는 의미이다. 
+        print      "Sub-Sum:   " + "{xx1}".format( xx1=xx[1]/10) + "{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y}".format( y=y) 
+        print      "          ---"
+        print      "           " + bcolors.YELLO + "{:>2}".format(val_q1) + bcolors.ENDC 
+        print      "         +" + bcolors.YELLO + "{:>2}".format(val_q2/10) + bcolors.ENDC  
+        print      "          ---"
+        ans = val_q1 + val_q2 
+        cmd = "{:>2}+{:>3}=?  ".format(val_q1, val_q2) + (" "*(3 - len(str( ans)))) 
+        val_01 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val_01 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print
+        
+        #------------------------------------------
+        print "2단계: 곱하는 수의 둘째 자리에 대한 계산을 한다."        
+        print "2-1단계: 더해지는 수의 뒷자리부터 계산한다."
+        #val_q1 = input( "Sub-Q1: {xx0} x {y} = y_q1? ".format( xx0=xx[0], y=y))      
+        #앞에서 뒤에 풀어야 할 수식을 적어준다. 가로 방식과 세로 방식의 융합이다. 2*9 = 을 앞에 적어준다.
+        print      "Sub2-1:    " + "{xx1}".format( xx1=xx[1]/10) + bcolors.YELLO + "{xx0}".format( xx0=xx[0]) + bcolors.ENDC
+        print      "          x" + bcolors.YELLO + "{y1}".format( y1=yy[1]/10) + bcolors.ENDC + "{y0}".format(y0=yy[0])
+        print      "          ---"
+        ans = xx[0] * yy[1] 
+        cmd =    "{}x{}=?     ".format(xx[0], yy[1]/10) + (" "*(2 - len(str( ans/10)))) 
+        val_q1 = input( bcolors.YELLO + cmd + bcolors.ENDC) *10
+        if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "2-2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        #val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
+        print      "Sub2-2:    " + bcolors.YELLO + "{xx1}".format( xx1=xx[1]/10) + bcolors.ENDC +"{xx0}".format( xx0=xx[0])
+        print      "          x" + bcolors.YELLO + "{y1}".format( y1=yy[1]/10) + bcolors.ENDC + "{y0}".format(y0=yy[0])
+        print      "          ---"
+        print      "          {:>2}".format(val_q1/10)  
+        ans = xx[1] * yy[1] 
+        cmd =  "{}x{}=?    ".format(xx[1]/10, yy[1]/10) + (" "*(2 - len(str( ans/100)))) 
+        val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC) * 10 * 10
+        if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "2단계 합산단계: 두 결과를 합친다."
+        # 합산이 용이하도록 자리 수를 맞춘다.
+        # 숫자들의 위치가 갖도록 오른쪽 정렬한다. 
+        # :>3이면 3자리로 오른쪽 정렬하라는 의미이다. 
+        print      "Sub-Sum:   " + "{xx1}".format( xx1=xx[1]/10) + "{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y}".format( y=y) 
+        print      "          ---"
+        print      "         " + bcolors.YELLO + "{:>3}".format(val_q1/10) + bcolors.ENDC 
+        print      "       +" + bcolors.YELLO + "{:>3}".format(val_q2/10/10) + bcolors.ENDC  
+        print      "          ---"
+        ans = val_q1 + val_q2 
+        cmd = "{:>3}+{:>4}=".format(val_q1, val_q2) + (" "*(4 - len(str( ans)))) 
+        val_02 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val_02 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print
+
+        print "최종합산단계: 두 결과를 합친다."
+        print      "Tot-Sum:   " + "{xx1}".format( xx1=xx[1]/10) + "{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y}".format( y=y) 
+        print      "          ---"
+        print      "          " + bcolors.YELLO + "{:>3}".format(val_01) + bcolors.ENDC 
+        print      "        +" + bcolors.YELLO + "{:>3}".format(val_02/10) + bcolors.ENDC  
+        print      "          ---"
+        ans = val_01 + val_02 
+        cmd = "{:>3}+{:>4}=".format(val_01, val_02) + (" "*(4 - len(str( ans)))) 
+        val = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print        
+        
+        #------------------------------------------
+        print "최종 결과를 검증한다."
+        if val == z:
+            print "You are right."
+            correct_N += 1
+        else:
+            print "It is incorrect!"
+            print "답은 {}이고, 당신은 {}라고 답했습니다.".format( z, val)
+        print
+    
+    score = 100.0 * correct_N / N
+    print "Your score is {score}".format(score=score)
 	
+def ask_q2( N):
+    """
+    ask_q22( N)
+    - 두자리 수와 두자리 수를 곱한다.
+    """
+    print "두자리수와 두자리수의 곱셈 계산을 배우면서 테스트한다."
+    print "- 각 자리를 단계적으로 나눠서 계산하는 방법을 익히게 한다."
+    print "  (2자리 숫자의 계산을 아래에서 위로 단계적으로 계산한다.)"
+
+    correct_N = 0
+    for nn in range( N):
+        x, y = rd.randint(10, 99), rd.randint(10, 99)
+        z = x * y
+        
+        print bcolors.OKBLUE + "{}".format( nn + 1) + bcolors.ENDC + "번째 문제입니다."
+        # print "Q: {x} x {y} =?".format(x=x, y=y)
+        print "Q: {x:>2}".format(x=x) #두자리 수
+        print "  x{y:>2}".format(y=y) #두자리 수 
+        print
+ 
+        # 자리수별로 x를 나타내어 xx 어레이에 저장한다.
+        # yy = [ y % 10, (y/10)*10] 
+        xx = [ x % 10, (x/10)*10]
+        yy = [ y % 10, (y/10)*10]
+
+        """
+        [2014-9-13] 편집 사항
+        - 전체적으로 한칸씩 미룬다. 최종합산 부분에서 1칸이 모자라기 때문이다.
+        """
+        #---------------------------------------------
+        print "1단계: 곱하는 수의 첫 자리에 대한 계산을 한다."        
+        print "1-1단계: 더해지는 수의 뒷자리부터 계산한다."
+        #val_q1 = input( "Sub-Q1: {xx0} x {y} = y_q1? ".format( xx0=xx[0], y=y))
+        #앞에서 뒤에 풀어야 할 수식을 적어준다. 가로 방식과 세로 방식의 융합이다. 2*9 = 을 앞에 적어준다.
+        print      "Sub1-1:    " + "{xx1}".format( xx1=xx[1]/10) + bcolors.YELLO + "{xx0}".format( xx0=xx[0]) + bcolors.ENDC
+        print      "          x" + "{y1}".format( y1=yy[1]/10) + bcolors.YELLO + "{y0}".format( y0=yy[0]) + bcolors.ENDC
+        print      "          ---"
+        ans = xx[0] * yy[0] 
+        cmd =    "{}x{}=?     ".format(xx[0], yy[0]) + (" "*(3 - len(str( ans)))) 
+        val_q1 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "1-2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        #val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
+        print      "Sub1-2:    " + bcolors.YELLO + "{xx1}".format( xx1=xx[1]/10) + bcolors.ENDC +"{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y1}".format( y1=yy[1]/10) + bcolors.YELLO + "{y0}".format( y0=yy[0]) + bcolors.ENDC
+        print      "          ---"
+        print      "           {:>2}".format(val_q1)  
+        ans = xx[1] * yy[0]
+        cmd =  "{}x{}=?     ".format(xx[1]/10, yy[0]) + (" "*(2 - len(str( ans)))) 
+        val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC) * 10
+        if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "1단계 합산단계: 두 결과를 합친다."
+        # 합산이 용이하도록 자리 수를 맞춘다.
+        # 숫자들의 위치가 갖도록 오른쪽 정렬한다. 
+        # :>3이면 3자리로 오른쪽 정렬하라는 의미이다. 
+        print      "Sub-Sum:   " + "{xx1}".format( xx1=xx[1]/10) + "{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y}".format( y=y) 
+        print      "          ---"
+        print      "           " + bcolors.YELLO + "{:>2}".format(val_q1) + bcolors.ENDC 
+        print      "         +" + bcolors.YELLO + "{:>2}".format(val_q2/10) + bcolors.ENDC  
+        print      "          ---"
+        ans = val_q1 + val_q2 
+        cmd = "{:>2}+{:>3}=?  ".format(val_q1, val_q2) + (" "*(3 - len(str( ans)))) 
+        val_01 = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val_01 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print
+        
+        #------------------------------------------
+        print "2단계: 곱하는 수의 둘째 자리에 대한 계산을 한다."        
+        print "2-1단계: 더해지는 수의 뒷자리부터 계산한다."
+        #val_q1 = input( "Sub-Q1: {xx0} x {y} = y_q1? ".format( xx0=xx[0], y=y))      
+        #앞에서 뒤에 풀어야 할 수식을 적어준다. 가로 방식과 세로 방식의 융합이다. 2*9 = 을 앞에 적어준다.
+        print      "Sub2-1:    " + "{xx1}".format( xx1=xx[1]/10) + bcolors.YELLO + "{xx0}".format( xx0=xx[0]) + bcolors.ENDC
+        print      "          x" + bcolors.YELLO + "{y1}".format( y1=yy[1]/10) + bcolors.ENDC + "{y0}".format(y0=yy[0])
+        print      "          ---"
+        ans = xx[0] * yy[1] 
+        cmd =    "{}x{}=?     ".format(xx[0], yy[1]/10) + (" "*(2 - len(str( ans/10)))) 
+        val_q1 = input( bcolors.YELLO + cmd + bcolors.ENDC) *10
+        if val_q1 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "2-2단계: 더해지는 수의 앞자리에 대해 계산한다. 계산후 자리수를 맞추기 위해 0을 덧붙인다."
+        #val_q2 = input( "Sub-Q2: ({xx1} x {y}) x 10 = y_q2? ".format( xx1=xx[1]/10, y=y))
+        print      "Sub2-2:    " + bcolors.YELLO + "{xx1}".format( xx1=xx[1]/10) + bcolors.ENDC +"{xx0}".format( xx0=xx[0])
+        print      "          x" + bcolors.YELLO + "{y1}".format( y1=yy[1]/10) + bcolors.ENDC + "{y0}".format(y0=yy[0])
+        print      "          ---"
+        print      "          {:>2}".format(val_q1/10)  
+        ans = xx[1] * yy[1] 
+        cmd =  "{}x{}=?    ".format(xx[1]/10, yy[1]/10) + (" "*(2 - len(str( ans/100)))) 
+        val_q2 = input( bcolors.YELLO + cmd + bcolors.ENDC) * 10 * 10
+        if val_q2 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        
+        print "2단계 합산단계: 두 결과를 합친다."
+        # 합산이 용이하도록 자리 수를 맞춘다.
+        # 숫자들의 위치가 갖도록 오른쪽 정렬한다. 
+        # :>3이면 3자리로 오른쪽 정렬하라는 의미이다. 
+        # 2단계에서는 10의 자리는 단순함을 위해 무시하고 계산하고 다음 단계에서 제대로 반영한다.
+        print      "Sub-Sum:   " + "{xx1}".format( xx1=xx[1]/10) + "{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y}".format( y=y) 
+        print      "          ---"
+        print      "         " + bcolors.YELLO + "{:>3}".format(val_q1/10) + bcolors.ENDC 
+        print      "       +" + bcolors.YELLO + "{:>3}".format(val_q2/10/10) + bcolors.ENDC  
+        print      "          ---"
+        ans = val_q1 + val_q2 
+        cmd = "{:>2}+{:>3}=? ".format(val_q1/10, val_q2/10) + (" "*(3 - len(str( ans/10)))) 
+        val_02 = input( bcolors.YELLO + cmd + bcolors.ENDC) * 10
+        if val_02 != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print
+
+        print "최종합산단계: 두 결과를 합친다."
+        print      "Tot-Sum:   " + "{xx1}".format( xx1=xx[1]/10) + "{xx0}".format( xx0=xx[0])
+        print      "          x" + "{y}".format( y=y) 
+        print      "          ---"
+        print      "          " + bcolors.YELLO + "{:>3}".format(val_01) + bcolors.ENDC 
+        print      "        +" + bcolors.YELLO + "{:>3}".format(val_02/10) + bcolors.ENDC  
+        print      "          ---"
+        ans = val_01 + val_02 
+        cmd = "{:>3}+{:>4}=".format(val_01, val_02) + (" "*(4 - len(str( ans)))) 
+        val = input( bcolors.YELLO + cmd + bcolors.ENDC)
+        if val != ans: print "틀렸어요. 답은 {}입니다.".format( ans) 
+        print        
+        
+        #------------------------------------------
+        print "최종 결과를 검증한다."
+        if val == z:
+            print "You are right."
+            correct_N += 1
+        else:
+            print "It is incorrect!"
+            print "답은 {}이고, 당신은 {}라고 답했습니다.".format( z, val)
+        print
+    
+    score = 100.0 * correct_N / N
+    print "Your score is {score}".format(score=score)
 	
 def gugu_basic():  
     
