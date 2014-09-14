@@ -881,12 +881,14 @@ def ask_root_2bc( N):
 
         print '단계3: x = +/-sqrt({C}) - {B}'.format(C=C,B=B)
         sc = math.sqrt( C)
-        x_p = input( 'x+ = +{sc:.1e} - {B} =? '.format(sc=sc, B=B))       
-        x_n = input( 'x- = -{sc:.1e} - {B} =? '.format(sc=sc, B=B))
+        x_p = input( 'x+ = +{sc:.1e} - {B} = (x.xeXX exp-form) ? '.format(sc=sc, B=B))       
+        x_n = input( 'x- = -{sc:.1e} - {B} = (x.xeXX exp-form) ? '.format(sc=sc, B=B))
+        x_str = "{:.1e}, {:.1e}".format( x_p, x_n)
         ans_p, ans_n = sc - B, -sc - B
+        ans_str = "{:.1e}, {:.1e}".format( ans_p, ans_n)         
         # if the answer is not int, this is not solvable for perfect precision
-        if (x_p, x_n) != (ans_p, ans_n): 
-            print '틀렸어요. 답은 {:.1e}, {:.1e}입니다.'.format( ans_p, ans_n)
+        if x_str != ans_str: 
+            print '틀렸어요. 답은 {ans_str}입니다.'.format( ans_str = ans_str)
         else:
             print '맞았어요^^;'
             correct_N += 1        
