@@ -70,6 +70,14 @@ class bcolors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
 
+# 컬러를 변환한다.
+def cl( bw_str, color_mode = bcolors.YELLO):
+    """
+    흑백 문자열을 컬러 문자열로 변경한다.
+    """
+    return color_mode + bw_str + bcolors.ENDC
+
+
 def show_table():
     for x in range(2, 10):
         print "{0} Level".format( x)
@@ -862,7 +870,8 @@ def ask_root_2bc( N):
             
         print '문제:  x^2 + {b}x + {c} = 0, find x?'.format( b=b, c=c)
         print 
-        print '단계1: 좌변을 2차 거듭제곱 형태로 만든다.' 
+        print '단계1: 좌변을 2차 거듭제곱 형태로 만든다.'
+        print('      x^2 + ' +  cl('{b}') + 'x + {c} = 0, find x?').format( b=b, c=c)
         print '      (x+B)^2 + ({b}-2B)x + {c}-B^2 = 0'.format( b=b, c=c)
         print '      여기서, (x+B)^2 = x^2 + 2Bx + B^2' 
         B = input('B = {b}/2 = ? '.format( b=b))
@@ -872,6 +881,8 @@ def ask_root_2bc( N):
         print
 
         print '단계2: 좌변을 2차 거듭제곱 형태로 만든다.' 
+        print('      x^2 + ' +  cl('{b}') + 'x + {c} = 0, find x?').format( b=b, c=c)
+        print('      (x+' + cl('{B}') + ')^2 + ({b}-' + cl('{B_2}') + ')x + {c}-' + cl('{B2}') + ' = 0').format( b=b, c=c, B=B, B_2 = 2*B, B2=B**2)
         print '      (x+{B})^2 = C'.format( B=B)
         C = input('C = ({B})^2 - {c} = ? '.format( B=B, c=c))
         ans = B**2 - c
@@ -879,10 +890,16 @@ def ask_root_2bc( N):
         else: print '맞았어요'
         print
 
-        print '단계3: x = +/-sqrt({C}) - {B}'.format(C=C,B=B)
+        print '단계3: 양의 근과 음의 근을 구하는 단계입니다.'
+        print('      x^2 + ' +  cl('{b}x') + ' + {c} = 0, find x?').format( b=b, c=c)
+        print('      (x+' + cl('B') + ')^2 + ({b}-2' + cl('B') + 'x + {c}-' + cl('B^2') + ' = 0').format( b=b, c=c)
+        print('      (x+{B})^2 = ' + cl('C')).format( B=B)
+        print '      (x_p, x_n) = (+sqrt({C}) - {B}, -sqrt({C}) - {B})'.format(C=C,B=B)
+        print '정답은 지수형(+x.xe+XX)으로 표현 했거나'
+        print '      또는 내부 변환하여 소수점 첫째짜리까지 검증합니다.'
         sc = math.sqrt( C)
-        x_p = input( 'x+ = +{sc:.1e} - {B} = (x.xeXX exp-form) ? '.format(sc=sc, B=B))       
-        x_n = input( 'x- = -{sc:.1e} - {B} = (x.xeXX exp-form) ? '.format(sc=sc, B=B))
+        x_p = input( 'x_p = +{sc:.2e} - {B} = ? '.format(sc=sc, B=B))       
+        x_n = input( 'x_n = -{sc:.2e} - {B} = ? '.format(sc=sc, B=B))        
         x_str = "{:.1e}, {:.1e}".format( x_p, x_n)
         ans_p, ans_n = sc - B, -sc - B
         ans_str = "{:.1e}, {:.1e}".format( ans_p, ans_n)         
@@ -890,14 +907,15 @@ def ask_root_2bc( N):
         if x_str != ans_str: 
             print '틀렸어요. 답은 {ans_str}입니다.'.format( ans_str = ans_str)
         else:
-            print '맞았어요^^;'
+            print '(두자리수 정밀도 기준으로) 맞았어요^^; '
             correct_N += 1        
         print
         
         a_p = x_p**2 + b*x_p + c
-        print '검증(x+): {x:.1e}^2 + {b}*{x:.1e} + {c} = {a_p:.1e}'.format(x=x_p, b=b, c=c, a_p=a_p)
+        print '검증(x_p): {x:.1e}^2 + {b}*{x:.1e} + {c} = {a_p:.1e}'.format(x=x_p, b=b, c=c, a_p=a_p)
         a_n = x_n**2 + b*x_n + c
-        print '검증(x-): {x:.1e}^2 + {b}*{x:.1e} + {c} = {a_n:.1e}'.format(x=x_n, b=b, c=c, a_n=a_n)
+        print '검증(x_n): {x:.1e}^2 + {b}*{x:.1e} + {c} = {a_n:.1e}'.format(x=x_n, b=b, c=c, a_n=a_n)
+        print
         
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
