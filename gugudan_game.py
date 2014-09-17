@@ -990,5 +990,5 @@ def gugu_basic():
         
         print         
 
-print bcolors.WARNING + "진짜 교육과 게임이 합쳐지는 리얼에듀게임이 시작됩니다." + bcolors.ENDC
+print bcolors.WARNING + "교육과 게임이 진짜로 합쳐지는 리얼에듀게임이 시작됩니다." + bcolors.ENDC
 gugu_basic()
