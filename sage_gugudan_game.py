@@ -920,7 +920,7 @@ def ask_root_2bc( N):
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
 	
-def gugu_basic():  
+def _gugu_basic_r0():  
     
     level = 0
     while level != 9:
@@ -990,6 +990,76 @@ def gugu_basic():
         
         print         
 
+def SAGE_gugu_basic():  
+    
+    level = 0
+    while level != 9:
+        print "메뉴: 어떤 에듀게임을 할까요"
+        print "0. 레벨-업 모드"
+        print "1. 구구단 테이블을 보여줍니다." 
+        print "2. 한자리 수 곱셈 게임입니다."
+        print "3. 두자리수와 한자리수의 곱셉 게임입니다."
+        print "4. 두자리 수 곱셈 게임입니다."
+        print "5. 2차 방정식 근의 공식 게임입니다(a=1)."
+        print "9. 게임 완료"
+        level = input( "번호를 입력해 주세요 (0-5, 9=quit) --> ")
+        print
+        
+        if level == 0:
+            print "순서대로 하면서 레벨을 높혀봅시다."            
+            print "레벨-1: 구구단 테이블을 보여줍니다."
+            show_table()
+            
+            print "레벨-2:한자리 수 곱셈 게임입니다."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            ask_q1( N_prob)
+            print
+            
+            print "레벨-3:두자리수와 한자리수의 곱셉 게임입니다."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            ask_q21( N_prob)
+            print
+            
+            print "레벨-4: 두자리 수 곱셈 게임입니다."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            ask_q2( N_prob)
+            
+        elif level == 1:
+            print "레벨-1: 구구단 테이블을 보여줍니다."
+            show_table()
+            print
+            
+        elif level == 2:
+            print "레벨-2:한자리 수 곱셈 게임입니다."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            with Timer( '1x1곱셈 {}개'.format( N_prob), N_prob):
+                ask_q1( N_prob)
+            print 
+        
+        elif level == 3:
+            print "레벨-3:두자리수와 한자리수의 곱셉 게임입니다."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            with Timer( '2x1곱셈 {}개'.format( N_prob), N_prob):
+                ask_q21( N_prob)
+            print
+            
+        elif level == 4:
+            print "레벨-4: 두자리 수 곱셈 게임입니다."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            with Timer( '2x2곱셈 {}개'.format( N_prob), N_prob):
+                ask_q2( N_prob)
+
+        elif level == 5:
+            print "레벨-5: 2차 방정식 근의 공식 게임입니다 (a=1 경우)."
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            with Timer( '2차 방정식(a=1) {}개'.format( N_prob), N_prob):
+                SAGE_ask_root_2bc( N_prob)
+
+        elif level == 9:
+            print "게임이 끝났습니다."
+        
+        print   
+
 def SAGE_ask_root_2bc( N):
     print "=================================================================="
     print '2차 방정식의 근을 구하는 문제입니다.'
@@ -997,7 +1067,11 @@ def SAGE_ask_root_2bc( N):
     var('x b c B C')
     f = x**2 + b*x + c == 0
     print "풀고자하는 2차 방정식은 아래와 같습니다."
-    print maxima(f)    
+    print maxima(f)
+    print "이론적으로 구한 근들은 다음과 같습니다."
+    sol = solve( f, x, solution_dict=True)
+    for sol_i in sol:
+        print maxima( sol_i[x])    
     
     correct_N = 0
     for ii in range( N):
@@ -1155,6 +1229,6 @@ def SAGE_main():
 if __name__ == "__main__":
     print bcolors.WARNING + "교육과 게임이 진짜로 합쳐지는 리얼에듀게임이 시작됩니다." + bcolors.ENDC
 
-    SAGE_main()
+    # SAGE_main()
     
-    # gugu_basic()
+    SAGE_gugu_basic()
