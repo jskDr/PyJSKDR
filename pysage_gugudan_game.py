@@ -1224,6 +1224,8 @@ def SAGE_main():
     print "이 버젼은 sage를 기반한 것입니다."
     print "현재는 sage 기능을 파이썬에서 사용하는 형태로 진행하고,"
     print "나중에는 확장자도 sage로 바꾸어 full mode로 돌린다."
+    print "Sage를 실행한 후에 load(fname)을 실행해야 한다."
+    print "코멘트라인에서 sage fname.py는 순수한 python 모드이다."
     
     print "--------------------------------------------------------------"
     print "Sage Testing Commands"
