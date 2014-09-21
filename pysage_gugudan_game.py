@@ -905,7 +905,8 @@ def ask_root_2bc( N):
         ans_str = "{:.1e}, {:.1e}".format( ans_p, ans_n)         
         # if the answer is not int, this is not solvable for perfect precision
         if x_str != ans_str: 
-            print '틀렸어요. 답은 {ans_str}입니다.'.format( ans_str = ans_str)
+            print '틀렸어요. 답은 {ans_str}이고 입력은 {x_str}을 했어요.'.format( ans_str = ans_str, x_str = x_str)
+            print '(정답은 {:.3f},{:.3f}이고 입력은 {:.3f},{:.3f}을 했어요.)'.format( ans_p, ans_n, x_p, x_n)
         else:
             print '(두자리수 정밀도 기준으로) 맞았어요^^; '
             correct_N += 1        
@@ -1205,7 +1206,8 @@ def SAGE_ask_root_2bc( N):
         ans_str = "{:.1e}, {:.1e}".format( ans_p, ans_n)         
         # if the answer is not int, this is not solvable for perfect precision
         if x_str != ans_str: 
-            print '틀렸어요. 답은 {ans_str}입니다.'.format( ans_str = ans_str)
+            print '틀렸어요. 답은 {ans_str}이고 입력은 {x_str}을 했어요.'.format( ans_str = ans_str, x_str = x_str)
+            print '(정답은 {:.3f},{:.3f}이고 입력은 {:.3f},{:.3f}을 했어요.)'.format( ans_p, ans_n, x_p, x_n)
         else:
             print '(두자리수 정밀도 기준으로) 맞았어요^^; '
             correct_N += 1        
