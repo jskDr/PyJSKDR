@@ -144,7 +144,6 @@ class login_sys():
                 
 #========================================================================
 
-
 def show_table():
     for x in range(2, 10):
         print "{0} Level".format( x)
@@ -195,6 +194,11 @@ def ask_q1( N):
     return score
     
 def ask_q_login(ask_q, N, user_log):
+    """
+    추가할 기능
+    - 10개중에 9개를 맞추었으면 단위 시간은 총시간/9개로 변경 예정
+      (불리하게 하더라도 불합리하게 하면 안된다는 작은 딸의 생각 반영)
+    """
     
     tstart = time.time()
     score = ask_q(N)
@@ -958,6 +962,8 @@ def ask_root_2bc( N):
     for ii in range( N):
         print '{}번째 문제입니다.'.format( ii+1)
         
+        """
+        # 기존의 방법은 실수 계산을 필요로 하기 때문에 정수 버젼으로 변경함.
         # b는 계산의 편이를 위해 짝수만 사용한다.
         c = rd.randint(-10, 10)
         if c < 0:
@@ -967,7 +973,12 @@ def ask_root_2bc( N):
             b_min = 2 * math.sqrt( c)
             b_m = int( math.ceil( b_min / 2.0))
             b = rd.randint( b_m, b_m + 10) * 2
+        """
             
+        alpha, beta = rd.randint(-9, 9), rd.randint(-9, 9)
+        b = -1 * (alpha + beta)
+        c = alpha * beta
+                    
         print '문제:  x^2 + {b}x + {c} = 0, find x?'.format( b=b, c=c)
         print 
         print '단계1: 좌변을 2차 거듭제곱 형태로 만든다.'
@@ -1218,6 +1229,7 @@ def SAGE_ask_root_2bc( N):
         print "--------------------------------------------------------------"
         print cl('{}번째 문제입니다.'.format( ii+1))
     
+        """
         cc = rd.randint(-10, 10)
         if cc < 0:
             bb = rd.randint(-10, 10) * 2
@@ -1226,6 +1238,11 @@ def SAGE_ask_root_2bc( N):
             bb_min = 2 * math.sqrt( cc)
             bb_m = int( math.ceil( bb_min / 2.0))
             bb = rd.randint( bb_m, bb_m + 10) * 2
+        """
+
+        alpha, beta = rd.randint(-9, 9), rd.randint(-9, 9)
+        bb = -1 * (alpha + beta)
+        cc = alpha * beta
 
         # print '문제:  x^2 + {b}x + {c} = 0, find x?'.format( b=bb, c=cc)
         print "풀고자하는 2차 방정식은 다음과 같다."
