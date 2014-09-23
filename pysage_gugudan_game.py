@@ -28,7 +28,8 @@ class Timer(object):
     # do some foo
     # do some stuff
     """
-
+    
+#========================================================================
 class sizedInt():    
     """
     val은 정수이고, size는 정수의 허용 크기이다.
@@ -59,7 +60,9 @@ def dotstr2format( s_in):
                 dot_count = 0
             s_out += s
     return s_out 
+#========================================================================
 
+#========================================================================
 # 컬러를 사용한다.
 class bcolors:
     HEADER = '\033[95m'
@@ -76,6 +79,71 @@ def cl( bw_str, color_mode = bcolors.YELLO):
     흑백 문자열을 컬러 문자열로 변경한다.
     """
     return color_mode + bw_str + bcolors.ENDC
+#========================================================================
+
+
+#========================================================================
+import operator
+class login_sys():
+    def __init__(self):
+        self.user_name = raw_input("사용자 이름은 무엇인가요: ")
+        print 
+    
+        print "사용자 이름: ", self.user_name
+
+    def append(self, problem, score, records):
+        with open("score.txt", "a") as myfile:
+            out_data = "{problem}, {name}, {score}".format( name = self.user_name, problem = problem, score = score)
+            for record in records:
+                out_data += ", {}".format(record)
+            out_data += "\n"
+            myfile.write( out_data)
+    
+    def show(self):
+        """
+        [File format]
+        0번호, 1이름, 2점수, 3갯수, 4총시간, 5단위시간 
+        """
+        words_all = []
+        #print "최근순으로 보여준다."
+        with open("score.txt", "r") as myfile:
+            lines = myfile.readlines()
+            for line in lines:
+                #print line,
+                words = line.split(',')
+                #print "{}의 시간 = {}".format( words[1], words[5])
+                words_all.append( words)
+            #print
+        
+        print "단위시간이 최고 적은순으로 보여준다."
+        print "TOP-15위까지만 보여줍니다."
+        print "랭킹: 0번호, 1이름, 2점수, 3갯수, 4총시간(초), 5단위시간(초)"
+        words_all.sort( key = operator.itemgetter(5))
+        for idx, words in enumerate(words_all):
+            if idx < 15:
+                line = ",".join( words)
+                print idx+1, "순위: ", line,
+            else:
+                break
+        print
+
+    def show_nosort(self):
+        """
+        [File format]
+        0번호, 1이름, 2점수, 3갯수, 4총시간, 5단위시간 
+        """
+        words_all = []
+        print "최근순으로 보여준다."
+        with open("score.txt", "r") as myfile:
+            lines = myfile.readlines()
+            for line in lines:
+                print line,
+                words = line.split(',')
+                print "{}의 시간 = {}".format( words[1], words[5])
+                words_all.append( words)
+            print
+                
+#========================================================================
 
 
 def show_table():
@@ -87,6 +155,25 @@ def show_table():
         print
 
 # 지금은 한자리수에 대해서 물어본다. 
+def _ask_q1_r0( N):
+    """
+      한자리수에 대해서 물어본다.
+    """
+    correct_N = 0
+    for iter in range( N):
+        x, y = rd.randint(2, 9), rd.randint(2, 9)
+        z = x * y
+        val_str = raw_input( "{x} x {y} =? ".format(x=x, y=y))
+        val = int( val_str)
+        if val == z:
+            print "You are right."
+            correct_N += 1
+        else:
+            print "It is incorrect!"
+    
+    score = 100.0 * correct_N / N
+    print "Your score is {score}".format(score=score)
+
 def ask_q1( N):
     """
       한자리수에 대해서 물어본다.
@@ -105,6 +192,20 @@ def ask_q1( N):
     
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
+
+    return score
+    
+def ask_q_login(ask_q, N, user_log):
+    
+    tstart = time.time()
+    score = ask_q(N)
+    time_all = time.time() - tstart
+    time_each = time_all / N
+    print "Total time is {t:.2f}sec for {N}, each time is {t1:.2f}sec.".format(t=time_all, N=N, t1=time_each)
+   
+    if score == 100.0 and N >= 5:   
+        user_log.append( 1, score, [N, time_all, time_each])
+    
     
 def _ask_q2_r0( N):
     """
@@ -922,7 +1023,7 @@ def ask_root_2bc( N):
     print "Your score is {score}".format(score=score)
 	
 def _gugu_basic_r0():  
-    
+
     level = 0
     while level != 9:
         print "메뉴: 어떤 에듀게임을 할까요"
@@ -943,7 +1044,7 @@ def _gugu_basic_r0():
             
             print "레벨-2:한자리 수 곱셈 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            ask_q1( N_prob)
+            ask_q1( N_prob, user_log)
             print
             
             print "레벨-3:두자리수와 한자리수의 곱셉 게임입니다."
@@ -992,12 +1093,18 @@ def _gugu_basic_r0():
         print         
 
 def PythonSage_gugu_basic():  
-    
+
+    user_log = login_sys()
     level = 0
-    while level != 9:
+    while level != 99:
+        print "현재까지 랭킹 15위 리스트입니다."
+        print "100점을 받아야 하고 5개 이상의 문제를 풀어야만 기록 됩니다."
+        user_log.show()
+        print
+
         print "메뉴: 어떤 에듀게임을 할까요"
         print "------------------------------------"
-        print "Python & Sage에서 모두 가능한 게임" 
+        print "[Python & Sage에서 모두 가능한 게임]" 
         print "0. 레벨-업 모드"
         print "1. 구구단 테이블을 보여줍니다." 
         print "2. 한자리 수 곱셈 게임입니다."
@@ -1005,10 +1112,13 @@ def PythonSage_gugu_basic():
         print "4. 두자리 수 곱셈 게임입니다."
         print "5. 2차 방정식 근의 공식 게임입니다(a=1)."
         print "------------------------------------"
-        print "Sage에서 가능한 게임 (심볼릭 Math)"
-        print "6. 2차 방정식 근의 공식 게임입니다(a=1)."               
-        print "9. 게임 완료"
-        level = input( "번호를 입력해 주세요 (0-5, 9=quit) --> ")
+        print "[Sage에서 가능한 게임 (심볼릭 Math)]"
+        print "6. 2차 방정식 근의 공식 게임입니다(a=1)."  
+        print "------------------------------------"
+        print "[제어 명령어]"
+        print "10. 최고 순서대로 점수를 보여준다."            
+        print "99. 게임 완료"
+        level = input( "번호를 입력해 주세요 --> ")
         print
         
         if level == 0:
@@ -1018,6 +1128,7 @@ def PythonSage_gugu_basic():
             
             print "레벨-2:한자리 수 곱셈 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            # ask_q1( N_prob)
             ask_q1( N_prob)
             print
             
@@ -1038,29 +1149,36 @@ def PythonSage_gugu_basic():
         elif level == 2:
             print "레벨-2:한자리 수 곱셈 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            with Timer( '1x1곱셈 {}개'.format( N_prob), N_prob):
-                ask_q1( N_prob)
+            # with Timer( '1x1곱셈 {}개'.format( N_prob), N_prob):
+            ask_q_login( ask_q1, N_prob, user_log)
             print 
         
         elif level == 3:
             print "레벨-3:두자리수와 한자리수의 곱셉 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            with Timer( '2x1곱셈 {}개'.format( N_prob), N_prob):
-                ask_q21( N_prob)
+            #with Timer( '2x1곱셈 {}개'.format( N_prob), N_prob):
+            #    ask_q21( N_prob)
+            ask_q_login( ask_q21, N_prob, user_log)
             print
+
             
         elif level == 4:
             print "레벨-4: 두자리 수 곱셈 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            with Timer( '2x2곱셈 {}개'.format( N_prob), N_prob):
-                ask_q2( N_prob)
+            #with Timer( '2x2곱셈 {}개'.format( N_prob), N_prob):
+            #    ask_q2( N_prob)
+            ask_q_login( ask_q2, N_prob, user_log)
+            print
+            
 
         elif level == 5:
             print "레벨-5: 2차 방정식 근의 공식 게임입니다 (a=1 경우)."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            with Timer( '2차 방정식(a=1) {}개'.format( N_prob), N_prob):
-                ask_root_2bc( N_prob)
-
+            #with Timer( '2차 방정식(a=1) {}개'.format( N_prob), N_prob):
+            #    ask_root_2bc( N_prob)
+            ask_q_login( ask_root_2bc, N_prob, user_log)
+            print
+            
         # ------------------------------------
         # Sage에서 작동하는 게임
         # ------------------------------------
@@ -1068,10 +1186,17 @@ def PythonSage_gugu_basic():
         elif level == 6:
             print "레벨-6: 2차 방정식 근의 공식 게임입니다 (a=1 경우)."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
-            with Timer( '2차 방정식(a=1) {}개'.format( N_prob), N_prob):
-                SAGE_ask_root_2bc( N_prob)
+            #with Timer( '2차 방정식(a=1) {}개'.format( N_prob), N_prob):
+            #    SAGE_ask_root_2bc( N_prob)
+            ask_q_login( SAGE_ask_root_2bc, N_prob, user_log)
+            print
 
-        elif level == 9:
+        elif level == 10:
+            print "최고순서대로 점수를 보여준다."
+            print "- 일단은 전체를 보여준다."
+            user_log.show()
+        
+        elif level == 99:
             print "게임이 끝났습니다."
         
         print   
@@ -1247,7 +1372,6 @@ def SAGE_main():
 
 if __name__ == "__main__":
     print cl("교육과 게임이 진짜로 합쳐지는 리얼에듀게임이 시작됩니다.")
-
-    # SAGE_main()
+    print
     
     PythonSage_gugu_basic()
