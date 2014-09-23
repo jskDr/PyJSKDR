@@ -87,9 +87,8 @@ import operator
 class login_sys():
     def __init__(self):
         self.user_name = raw_input("사용자 이름은 무엇인가요: ")
-        print 
-    
         print "사용자 이름: ", self.user_name
+        print 
 
     def append(self, problem, score, records):
         with open("score.txt", "a") as myfile:
