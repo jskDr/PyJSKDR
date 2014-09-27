@@ -84,6 +84,8 @@ def cl( bw_str, color_mode = bcolors.YELLO):
 
 #========================================================================
 import operator
+import os # for file checking for existing
+
 class login_sys():
     def __init__(self):
         self.user_name = raw_input("사용자 이름은 무엇인가요: ")
@@ -105,26 +107,30 @@ class login_sys():
         """
         words_all = []
         #print "최근순으로 보여준다."
-        with open("score.txt", "r") as myfile:
-            lines = myfile.readlines()
-            for line in lines:
-                #print line,
-                words = line.split(',')
-                #print "{}의 시간 = {}".format( words[1], words[5])
-                words_all.append( words)
-            #print
-        
-        print "단위시간이 최고 적은순으로 보여준다."
-        print "TOP-15위까지만 보여줍니다."
-        print "랭킹: 0번호, 1이름, 2점수, 3갯수, 4총시간(초), 5단위시간(초)"
-        words_all.sort( key = operator.itemgetter(5))
-        for idx, words in enumerate(words_all):
-            if idx < 15:
-                line = ",".join( words)
-                print idx+1, "순위: ", line,
-            else:
-                break
-        print
+        file_path_name = "score.txt"
+        if os.path.isfile( file_path_name):
+            with open(file_path_name, "r") as myfile:
+                lines = myfile.readlines()
+                for line in lines:
+                    #print line,
+                    words = line.split(',')
+                    #print "{}의 시간 = {}".format( words[1], words[5])
+                    words_all.append( words)
+                #print
+            
+            print "단위시간이 최고 적은순으로 보여준다."
+            print "TOP-15위까지만 보여줍니다."
+            print "랭킹: 0번호, 1이름, 2점수, 3갯수, 4총시간(초), 5단위시간(초)"
+            words_all.sort( key = operator.itemgetter(5))
+            for idx, words in enumerate(words_all):
+                if idx < 15:
+                    line = ",".join( words)
+                    print idx+1, "순위: ", line,
+                else:
+                    break
+            print
+        else:
+            print "New high-score recoding is initiated."
 
     def show_nosort(self):
         """
@@ -203,12 +209,16 @@ def ask_q_login(ask_q, N, user_log):
     tstart = time.time()
     score = ask_q(N)
     time_all = time.time() - tstart
-    time_each = time_all / N
+    # 시간은 맞고 틀리고에 상관없이 전체 횟수로 나눈다.     
+    # time_each = time_all / (N * score)
+    # 시간은 틀린 문제에 대해 panelty를 매기면서 측정한다. 맞는 부분만 나눠준다. 
+    time_each = time_all / (N * score / 100.0)
     print "Total time is {t:.2f}sec for {N}, each time is {t1:.2f}sec.".format(t=time_all, N=N, t1=time_each)
-   
-    if score == 100.0 and N >= 5:   
-        user_log.append( 1, score, [N, time_all, time_each])
     
+    print "N>=3개인 경우만 기록에 포함한다."
+    print "그보다 작은 경우는 평균치가 충분히 만들어지지 않았다."
+    if N >= 3:   
+        user_log.append( 1, score, [N, time_all, time_each])    
     
 def _ask_q2_r0( N):
     """
@@ -986,7 +996,7 @@ def ask_root_2bc( N):
         print '      (x+B)^2 + ({b}-2B)x + {c}-B^2 = 0'.format( b=b, c=c)
         print '      여기서, (x+B)^2 = x^2 + 2Bx + B^2' 
         B = input('B = {b}/2 = ? '.format( b=b))
-        ans = b/2
+        ans = b/2.0
         if B != ans: print "틀렸어요. 답은 {}입니다.".format( ans)
         else: print '맞았어요'
         print
