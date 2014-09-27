@@ -199,26 +199,7 @@ def ask_q1( N):
 
     return score
     
-def ask_q_login(ask_q, N, user_log):
-    """
-    추가할 기능
-    - 10개중에 9개를 맞추었으면 단위 시간은 총시간/9개로 변경 예정
-      (불리하게 하더라도 불합리하게 하면 안된다는 작은 딸의 생각 반영)
-    """
-    
-    tstart = time.time()
-    score = ask_q(N)
-    time_all = time.time() - tstart
-    # 시간은 맞고 틀리고에 상관없이 전체 횟수로 나눈다.     
-    # time_each = time_all / (N * score)
-    # 시간은 틀린 문제에 대해 panelty를 매기면서 측정한다. 맞는 부분만 나눠준다. 
-    time_each = time_all / (N * score / 100.0)
-    print "Total time is {t:.2f}sec for {N}, each time is {t1:.2f}sec.".format(t=time_all, N=N, t1=time_each)
-    
-    print "N>=3개인 경우만 기록에 포함한다."
-    print "그보다 작은 경우는 평균치가 충분히 만들어지지 않았다."
-    if N >= 3:   
-        user_log.append( 1, score, [N, time_all, time_each])    
+
     
 def _ask_q2_r0( N):
     """
