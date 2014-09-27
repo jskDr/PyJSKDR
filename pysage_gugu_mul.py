@@ -81,75 +81,6 @@ def cl( bw_str, color_mode = bcolors.YELLO):
     return color_mode + bw_str + bcolors.ENDC
 #========================================================================
 
-
-#========================================================================
-import operator
-import os # for file checking for existing
-
-class login_sys():
-    def __init__(self):
-        self.user_name = raw_input("사용자 이름은 무엇인가요: ")
-        print "사용자 이름: ", self.user_name
-        print 
-
-    def append(self, problem, score, records):
-        with open("score.txt", "a") as myfile:
-            out_data = "{problem}, {name}, {score}".format( name = self.user_name, problem = problem, score = score)
-            for record in records:
-                out_data += ", {}".format(record)
-            out_data += "\n"
-            myfile.write( out_data)
-    
-    def show(self):
-        """
-        [File format]
-        0번호, 1이름, 2점수, 3갯수, 4총시간, 5단위시간 
-        """
-        words_all = []
-        #print "최근순으로 보여준다."
-        file_path_name = "score.txt"
-        if os.path.isfile( file_path_name):
-            with open(file_path_name, "r") as myfile:
-                lines = myfile.readlines()
-                for line in lines:
-                    #print line,
-                    words = line.split(',')
-                    #print "{}의 시간 = {}".format( words[1], words[5])
-                    words_all.append( words)
-                #print
-            
-            print "단위시간이 최고 적은순으로 보여준다."
-            print "TOP-15위까지만 보여줍니다."
-            print "랭킹: 0번호, 1이름, 2점수, 3갯수, 4총시간(초), 5단위시간(초)"
-            words_all.sort( key = operator.itemgetter(5))
-            for idx, words in enumerate(words_all):
-                if idx < 15:
-                    line = ",".join( words)
-                    print idx+1, "순위: ", line,
-                else:
-                    break
-            print
-        else:
-            print "New high-score recoding is initiated."
-
-    def show_nosort(self):
-        """
-        [File format]
-        0번호, 1이름, 2점수, 3갯수, 4총시간, 5단위시간 
-        """
-        words_all = []
-        print "최근순으로 보여준다."
-        with open("score.txt", "r") as myfile:
-            lines = myfile.readlines()
-            for line in lines:
-                print line,
-                words = line.split(',')
-                print "{}의 시간 = {}".format( words[1], words[5])
-                words_all.append( words)
-            print
-                
-#========================================================================
-
 def show_table():
     for x in range(2, 10):
         print "{0} Level".format( x)
@@ -673,6 +604,8 @@ def ask_q21( N):
     
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
+    
+    return score
 
 def _ask_q2_r1( N):
     """
@@ -947,6 +880,8 @@ def ask_q2( N):
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
     
+    return score
+    
 def ask_root_2bc( N):
     print '2차 방정식의 근의 공식을 구하는 문제입니다.'
     correct_N = 0
@@ -1022,6 +957,8 @@ def ask_root_2bc( N):
         
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
+    
+    return score
 	
 
 def SAGE_ask_root_2bc( N):
@@ -1175,5 +1112,7 @@ def SAGE_ask_root_2bc( N):
         
     score = 100.0 * correct_N / N
     print "Your score is {score}".format(score=score)
+    
+    return score
 
 
