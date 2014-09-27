@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+from pysage_gugu_lib import *
+
 import random as rd
 
 def ask_q1( N):

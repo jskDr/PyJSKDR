@@ -5,8 +5,12 @@ Created on Sat Sep 27 18:31:26 2014
 @author: james
 """
 
+from pysage_gugu_lib import *
+
 from pysage_gugu_mul import *
 import pysage_gugu_div as gugu_div
+import pysage_gugu_sym as gugu_sym
+
 import time
 
 #========================================================================
@@ -43,6 +47,9 @@ class login_sys():
                     #print line,
                     words = line.split(',')
                     #print "{}의 시간 = {}".format( words[1], words[5])
+                    # "랭킹: 0번호, 1이름, 2점수, 3갯수, 4총시간(초), 5단위시간(초)"
+                    # sec must be changed to sec
+                    words[5] = float( words[5])
                     words_all.append( words)
                 #print
             
@@ -52,8 +59,10 @@ class login_sys():
             words_all.sort( key = operator.itemgetter(5))
             for idx, words in enumerate(words_all):
                 if idx < 15:
+                    # "랭킹: 0번호, 1이름, 2점수, 3갯수, 4총시간(초), 5단위시간(초)"
+                    words[5] = str(words[5])
                     line = ",".join( words)
-                    print idx+1, "순위: ", line,
+                    print idx+1, "순위: ", line
                 else:
                     break
             print
@@ -76,7 +85,10 @@ class login_sys():
                 for line in lines:
                     #print line,
                     words = line.split(',')
+
                     #print "{}의 시간 = {}".format( words[1], words[5])
+                    words[5] = float( words[5])
+
                     words_all.append( words)
                 #print
             
@@ -87,8 +99,11 @@ class login_sys():
             words_all.sort( key = operator.itemgetter(5))
             for idx, words in enumerate(words_all):
                 if idx < 15:
+                    # "랭킹: 0번호, 1이름, 2점수, 3갯수, 4총시간(초), 5단위시간(초)"
+                    words[5] = str(words[5])
+
                     line = ",".join( words)
-                    print idx+1, "순위: ", line,
+                    print idx+1, "순위: ", line
                 else:
                     break
             print
@@ -265,7 +280,7 @@ def PythonSage_gugu_basic():
         print "21. 2차 방정식 근의 공식 게임입니다(a=1)."
 
         print "===================================="
-        print cl("[Sage 활용: 심볼릭 Math]")
+        print cl("[심볼릭 Math: import sympy]")
         print "121. 2차 방정식 근의 공식 게임입니다(a=1)."  
 
         print "===================================="
@@ -357,7 +372,7 @@ def PythonSage_gugu_basic():
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
             #with Timer( '2차 방정식(a=1) {}개'.format( N_prob), N_prob):
             #    SAGE_ask_root_2bc( N_prob)
-            ask_q_login( SAGE_ask_root_2bc, N_prob, user_log)
+            ask_q_login( gugu_sym.sympy_ask_root_2bc, N_prob, user_log)
             print
 
 
