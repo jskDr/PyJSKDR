@@ -274,6 +274,7 @@ def PythonSage_gugu_basic():
         print "------------------------------------"
         print cl("[나눗셈]")
         print "11. 한자리 수 나눗셈 게임입니다."
+        print "12. (2x1) 결과에 대한 나눗셈 게임입니다."
 
         print "------------------------------------"
         print cl("[방정식]")
@@ -348,11 +349,19 @@ def PythonSage_gugu_basic():
             
         # [나눗셈 게임]
         elif sel_item == 11:
-            print "1번:몫이 한자리 수인 나눗셈 게임입니다."
+            print "11번:몫이 한자리 수인 나눗셈 게임입니다."
             N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
             # with Timer( '1x1곱셈 {}개'.format( N_prob), N_prob):
             ask_q_login( gugu_div.ask_q1, N_prob, user_log, sel_item)
             print 
+
+        elif sel_item == 12:
+            print "12번:몫이 두자리수 나눗셈 게임입니다 (나누는 수는 1자리)"
+            N_prob = int( raw_input("몇 개의 문제를 풀겠습니까? "))
+            # with Timer( '1x1곱셈 {}개'.format( N_prob), N_prob):
+            ask_q_login( gugu_div.ask_q21, N_prob, user_log, sel_item)
+            print 
+
 
         # [이차 방정식에서 근 구하기]            
         elif sel_item == 21:
